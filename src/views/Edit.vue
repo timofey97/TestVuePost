@@ -1,51 +1,31 @@
 <template>
-  <v-container style="width: 30%">
-              <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
+  <v-container style="width: 40%">
+    <v-card>
+      <v-card-title>
+        <span class="headline">Edit Post</span>
+      </v-card-title>
 
-            <v-card-text>
-              <v-container>
-                <v-row >
-                  <v-col
-                  >
-                    <v-text-field
-                      v-model="editedItem.id"
-                      label="ID"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                  >
-                    <v-text-field
-                      v-model="editedItem.title"
-                      label="Title"
-                    ></v-text-field>
-                  </v-col>
-                  
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-
-          <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="close"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="save"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
+      <v-card-text>
+      <form @submit.prevent="save(editedItem)" id="check-login-form">
+          <v-textarea
+            v-model.trim="editedItem.title"
+            label="Title post"
+          ></v-textarea>
+          <v-btn
+            class="mr-4"
+            type="submit" color="success"
+          >
+            submit
+          </v-btn>
+          <v-btn
+            class="mr-4"
+            to="/posts"
+          >
+            back
+          </v-btn>
+      </form>
+      </v-card-text>
+    </v-card>  
   </v-container>
 </template>
 
@@ -53,43 +33,23 @@
 <script>
 
 export default {
-  name: 'Edit',
-
-
-  data: () => ({
-     
-    }),
-    computed: {
-      formTitle () {
-        return this.$store.state.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      },
-      editedItem() {
-        return this.$store.state.editedItem
-      },
-    },
+  name: "Edit",
+  data () {
+    return {
+      editedItem: ''
+    }
+  },
+  created () {
+    setTimeout( () => {
+      this.editedItem = this.$store.state.editedItem
+    }, 0);
+  },
     methods: {
-      editItem (item) {
-        this.$store.dispatch("editItem", item);
+      save (form) {
+        this.$store.dispatch("updatePost", form);
       },
-      deleteItem (item) {
-        this.$store.dispatch("deleteItem", item);
-      },
-      deleteItemConfirm () {
-        this.$store.dispatch("deleteItemConfirm");
-      this.$store.dispatch("closeDelete");
-      },
+  
       
-      closeDelete () {
-        this.$store.dispatch("closeDelete");
-      
-      },
-      save () {
-        this.$store.dispatch("save");
-     this.$store.dispatch("close");
-      },
-      close () {
-        this.$store.dispatch("close");
-      },
     },
   }
 </script>

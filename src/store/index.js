@@ -14,7 +14,6 @@ export default new Vuex.Store({
   state: {
     posts: [],
     search: '',
-    dialog: false,
     dialogDelete: false,
     headers: [
         {
@@ -46,7 +45,7 @@ export default new Vuex.Store({
       EDIT_POST(state, item) {
         state.editedIndex = state.posts.indexOf(item)
         state.editedItem = Object.assign({}, item)
-        state.dialog = true
+  
       },
       DELETE_POST(state, item) {
         state.editedIndex = state.posts.indexOf(item)
@@ -56,26 +55,18 @@ export default new Vuex.Store({
       DELETE_CONF(state) {
         state.posts.splice(state.editedIndex, 1)
       },
-      CLOSE (state) {
-          state.dialog = false
-          state.editedItem = Object.assign({}, state.defaultItem)
-          state.editedIndex = -1
-      },
       CLOSE_DEL (state) {
           state.dialogDelete = false
           state.editedItem = Object.assign({}, state.defaultItem)
           state.editedIndex = -1
       },
-      SAVE(state) {
-        if (state.editedIndex > -1) {
-          Object.assign(state.posts[state.editedIndex], state.editedItem)
-        } else {
-          state.posts.push(state.editedItem)
-        }
-      } ,
-      addUser(state, payload) {
+      ADD_POST(state, payload) {
         state.posts.push(payload);
-  },
+      },
+      UPDATE_POST(state, payload) {
+        Object.assign(state.posts[state.editedIndex], payload)
+        state.editedItem = Object.assign({}, state.defaultItem)
+      }
   },
   actions: {
     getPosts ({state, commit }) {
@@ -84,9 +75,7 @@ export default new Vuex.Store({
       .then(response => {
       commit('SET_POSTS', response.data)
       })}
-      console.log(state.posts);
-         } 
-      ,
+      },
       editItem ({ commit }, item) {
         commit('EDIT_POST', item)
       },
@@ -99,16 +88,14 @@ export default new Vuex.Store({
       closeDelete ({ commit }) {
         commit('CLOSE_DEL');
       },
-      save ({ commit }) {
-        commit('SAVE');
+      addPost: ({ state, commit }, value) => {
+        value.id = state.posts.length+1;
+        commit('ADD_POST', value);
+        router.push("/posts");
       },
-      close ({ commit }) {
-        commit('CLOSE');
-      },
-    addUser: ({ state, commit }, value) => {
-    value.id = state.posts.length+1;
-    commit('addUser', value);
-    router.push("/posts");
-  },},
+      updatePost: ({ commit }, value) => {
+        commit("UPDATE_POST", value);
+        router.push("/posts");
+      }},
       plugins: [createPersistedState()],
 })
