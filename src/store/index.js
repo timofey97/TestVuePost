@@ -106,7 +106,7 @@ export default new Vuex.Store({
         commit('CLOSE');
       },
     addUser: ({ state, commit }, value) => {
-    value.id = state.posts.length++;
+    value.id = state.posts.length+1;
     commit('addUser', value);
     router.push("/posts");
   },},

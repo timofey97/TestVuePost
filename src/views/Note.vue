@@ -1,6 +1,29 @@
 <template>
   <v-container style="width: 30%">
-    <form
+      <form @submit.prevent="save(form)" id="check-login-form">
+    <v-text-field
+      v-model.trim="form.title"
+      :error-messages="emailErrors"
+      label="Title post"
+      required
+    ></v-text-field>
+
+    <v-btn
+      class="mr-4"
+      type="submit" color="success"
+    >
+      submit
+    </v-btn>
+    <router-link to="/posts"><v-btn
+      class="mr-4"
+       
+    >
+      back
+    </v-btn></router-link>
+
+  </form>
+  
+    <!-- <form
       @submit.prevent="save(form)"
     >
       <h3>New Post</h3>
@@ -23,9 +46,9 @@
         </td>
       </tr>
       </table>
-    </form>
+    </form> -->
 
-    <router-link to="/posts">Back</router-link>
+    
               <!-- <v-card>
             <v-card-title>
               <span class="headline">{{ formTitle }}</span>

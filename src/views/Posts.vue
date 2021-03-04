@@ -168,6 +168,7 @@ export default {
         return this.$store.state.editedIndex === -1 ? 'New Item' : 'Edit Item'
       },
       Posts() {
+        console.log('d',this.$store.state.posts)
         return this.$store.state.posts
       },
       headers() {
